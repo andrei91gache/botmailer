@@ -53,7 +53,7 @@ function createWindow() {
       nodeIntegration: true
     }
   })
-  win.loadFile('index.html');
+  win.loadFile('public/index.html');
   win.once("ready-to-show", () => { win.show() });
   return win;
 }
