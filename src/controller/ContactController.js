@@ -5,14 +5,21 @@
  **/
 class ContactController{
 
+    constructor() {
+        const Paginator = require('paginator');
+        let paginator = new Paginator(10, 7);
+    }
+
     getAllContacts(ipcMain, knex, window)
     {
-        ipcMain.on("mainWindowLoaded", function () {
-            let contacts = knex.select("*").from("contacts");
+
+        ipcMain.on("contactsListDomLoaded", (event, arg) => {
+            console.log(arg);
+            /*let contacts = knex.select("*").from("contacts");
 
             contacts.then(function (rows) {
                 window.webContents.send("resultSent", rows);
-            });
+            });*/
 
         });
     }

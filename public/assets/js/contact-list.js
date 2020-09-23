@@ -8,10 +8,16 @@ const electron = require("electron");
 const ipc = electron.ipcRenderer;
 
 document.addEventListener("DOMContentLoaded", function () {
-    ipc.send("mainWindowLoaded");
+    ipc.send("contactsListDomLoaded",
+        {
+            "page" : 1,
+            "limit" : 10
+        });
+
     ipc.on("resultSent", function (evt, result) {
         readContacts(result);
     });
+
 });
 
 /**
@@ -23,7 +29,14 @@ function createContact() {
     let email = document.getElementById('c_email').value;
     let infos = document.getElementById('c_other_infos').value;
 
-    if (email === '' || !validateEmail(email)) {
+    if (email === '') {
+        $.growl.error({
+            title: "Eroare",
+            size: "large",
+            message: "Emailul nu a fost completat"
+        });
+        return;
+    } else if (!validateEmail(email)) {
         $.growl.error({
             title: "Eroare",
             size: "large",
@@ -49,18 +62,14 @@ function createContact() {
             size: "large",
             message: "Contactul a fost creat"
         });
-    })
-
+    });
 
 }
 
 function readContacts(contacts) {
+
     let tbody = document.getElementById('contacts-list');
-
-
     for (var i = 0; i < contacts.length; i++) {
-
-
         let fullname = contacts[i].fullname;
         let email = contacts[i].email;
         let infos = contacts[i].infos;
